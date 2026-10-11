@@ -130,8 +130,6 @@ The gear in the panel header stores two switches in the same settings file:
 
 A scan that was hashing, checking, or uploading when the app quit is stored as an error: "Interrupted. Scan the file again."
 
-If this PC still has data from the older VirusTotal Hotbar name, the first start moves `%APPDATA%\VirusTotal-Hotbar` and `%LOCALAPPDATA%\VirusTotal-Hotbar` into the VirusTotal-Tray folders, and replaces a Startup shortcut named `VirusTotal Hotbar.lnk`.
-
 ## Files in this folder
 
 | File | Role |
