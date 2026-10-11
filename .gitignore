@@ -1,0 +1,10 @@
+settings.json
+history.json
+inbox/
+.selftest/
+tray.log
+VirusTotalTray.ico
+VirusTotalTray-*.ico
+panel/data.js
+panel/data.js.tmp
+panel/command.js
