@@ -69,6 +69,7 @@ public class VtWindow {
     public delegate bool EnumProc(IntPtr hWnd, IntPtr lParam);
     [DllImport("user32.dll")] public static extern bool EnumWindows(EnumProc lpEnumFunc, IntPtr lParam);
     [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr hWnd);
+    [DllImport("user32.dll")] public static extern bool IsIconic(IntPtr hWnd);
     [DllImport("user32.dll")] public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
     [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
     [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
@@ -1394,9 +1395,16 @@ function Close-Panel {
     if ($hwnd -ne [IntPtr]::Zero) { [void][VtWindow]::SendMessage($hwnd, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero) }
 }
 
+function Test-PanelShown([IntPtr]$Hwnd) {
+    if ($Hwnd -eq [IntPtr]::Zero) { return $false }
+    # Minimized windows keep WS_VISIBLE, so IsWindowVisible alone treats them as open.
+    if ([VtWindow]::IsIconic($Hwnd)) { return $false }
+    return [VtWindow]::IsWindowVisible($Hwnd)
+}
+
 function Toggle-Panel {
     $hwnd = Find-VtWindow
-    if ($hwnd -ne [IntPtr]::Zero -and [VtWindow]::IsWindowVisible($hwnd)) { Hide-Panel }
+    if (Test-PanelShown $hwnd) { Hide-Panel }
     else { Show-Panel }
 }
 
