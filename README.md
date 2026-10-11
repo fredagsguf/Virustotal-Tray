@@ -4,6 +4,12 @@ A portable Windows tray app for [VirusTotal](https://www.virustotal.com). It sit
 
 The panel is a dark popup in VirusTotal blue on navy. A teal owl is the tray icon. The owl is this app's mark, not the VirusTotal logo.
 
+## Disclaimer
+
+This project is not affiliated with, endorsed by, or sponsored by VirusTotal. VirusTotal is a separate service. This app only calls the public VirusTotal API.
+
+The app does not include an API key. You create a free VirusTotal account, copy the API key from that account, and paste it into the app yourself. Lookups and uploads then run with your key, on your account.
+
 ## What you need
 
 The app adds no runtime of its own. These already come with a current Windows install:
