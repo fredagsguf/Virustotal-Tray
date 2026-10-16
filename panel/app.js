@@ -13,15 +13,24 @@ const state = {
   detailsOpen: false,
   settingsOpen: false,
   lookupValue: "",
+  hitsExpanded: false,
+  hitsFor: "",
 };
 
 const ICON = {
-  key: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.5 7a3.5 3.5 0 1 1 6.2 2.2l-1.1 1.1-.5 2.5-1.5-1.5-1.5 1.5-1-1 1.5-1.5-1.5-1.5 2.5-.5 1.1-1.1A3.48 3.48 0 0 1 5.5 7Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   arrow: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   file: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9 2.5H5.5A1.5 1.5 0 0 0 4 4v8a1.5 1.5 0 0 0 1.5 1.5h5A1.5 1.5 0 0 0 12 12V6.5L9 2.5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 2.5V6.5H12M8 9.5v3M6.5 11H9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   chevron: '<svg class="chev" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  gear: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M10.3 3.3h3.4l.3 1.7c.4.2.8.4 1.2.6l1.6-.6 1.7 2.9-1.3 1.1c.1.3.1.7.1 1s0 .7-.1 1l1.3 1.1-1.7 2.9-1.6-.6c-.4.2-.8.4-1.2.6l-.3 1.7h-3.4l-.3-1.7c-.4-.2-.8-.4-1.2-.6l-1.6.6-1.7-2.9 1.3-1.1c-.1-.3-.1-.7-.1-1s0-.7.1-1L5.5 7.9l1.7-2.9 1.6.6c.4-.2.8-.4 1.2-.6l.3-1.7Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.2" stroke="currentColor" stroke-width="1.8"/></svg>',
+  gear: '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="2.6" stroke="currentColor" stroke-width="1.6"/><path d="M8.6 2.5h2.8l.4 2 1.5.9 1.9-.7 1.4 2.4-1.5 1.3v1.7l1.5 1.3-1.4 2.4-1.9-.7-1.5.9-.4 2H8.6l-.4-2-1.5-.9-1.9.7-1.4-2.4 1.5-1.3V9.2L3.4 7.9l1.4-2.4 1.9.7 1.5-.9.4-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+  back: '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12 5l-5 5 5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  shield: '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2.5l6 2.2v4.6c0 3.8-2.6 6.6-6 8.2-3.4-1.6-6-4.4-6-8.2V4.7l6-2.2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.2 10l2 2 3.6-3.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  alert: '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3l7.5 13h-15L10 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 8.2v3.6M10 14v.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+  warn: '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M10 6.5v4M10 13.3v.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+  x: '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 7.5l5 5M12.5 7.5l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  drop: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 14v3.5A2.5 2.5 0 0 0 6.5 20h11a2.5 2.5 0 0 0 2.5-2.5V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
 };
+
+const VERDICT_ICON = { clean: ICON.shield, malicious: ICON.alert, suspicious: ICON.warn, error: ICON.x };
 
 function esc(value) {
   return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
@@ -40,6 +49,7 @@ function statsOf(scan) {
   return {
     malicious: Number(stats.malicious) || 0,
     suspicious: Number(stats.suspicious) || 0,
+    rest: (Number(stats.undetected) || 0) + (Number(stats.harmless) || 0),
     total,
   };
 }
@@ -124,14 +134,13 @@ function selectedScan() {
   return scans().find((scan) => scanId(scan) === state.selectedId) || null;
 }
 
-function meterWidth(scan) {
-  const kind = verdict(scan);
-  if (kind === "pending") return 36;
-  if (kind === "error") return 0;
-  if (kind === "clean") return 100;
+function meterHtml(scan, kind) {
+  if (kind === "pending") return `<div class="meter pending"><span></span></div>`;
   const stats = statsOf(scan);
-  if (!stats.total) return 0;
-  return Math.max(6, Math.min(100, ((stats.malicious || stats.suspicious) / stats.total) * 100));
+  if (kind === "error" || !stats.total) return `<div class="meter"></div>`;
+  const part = (cls, n) => n ? `<span class="part ${cls}" style="width:${(n / stats.total) * 100}%"></span>` : "";
+  return `<div class="meter">${part("malicious", stats.malicious)}${part("suspicious", stats.suspicious)}${part("rest", stats.rest)}</div>`
+    + `<p class="meter-legend"><span><i class="malicious"></i>${stats.malicious} malicious</span><span><i class="suspicious"></i>${stats.suspicious} suspicious</span><span><i class="rest"></i>${stats.rest} clean</span></p>`;
 }
 
 function sourceText(scan) {
@@ -201,39 +210,47 @@ function render() {
   const lookupEnd = previousLookup ? previousLookup.selectionEnd : null;
   const list = visibleScans();
   const current = selectedScan();
+  if (state.hitsFor !== state.selectedId) {
+    state.hitsFor = state.selectedId;
+    state.hitsExpanded = false;
+  }
   const kind = current ? verdict(current) : "pending";
   const parts = [];
   const allScans = scans();
   const status = headerStatus();
 
-  parts.push(`<header class="top"><div class="brand"><img class="mark" alt="" src="assets/favicon.svg?v=4"><div class="titles"><h1>VirusTotal</h1>`);
-  if (status) parts.push(`<p class="status">${esc(status)}</p>`);
-  parts.push(`</div></div><div class="head-actions"><button class="icon-btn" type="button" data-action="key" title="API key" aria-label="API key">${ICON.key}</button><button class="icon-btn${state.settingsOpen ? " on" : ""}" type="button" data-action="settings" title="Settings" aria-label="Settings" aria-pressed="${state.settingsOpen ? "true" : "false"}">${ICON.gear}</button></div></header>`);
+  if (state.settingsOpen) {
+    parts.push(`<header class="top"><div class="back"><button class="icon-btn" type="button" data-action="settings" title="Back" aria-label="Back">${ICON.back}</button><h1>Settings</h1></div></header>`);
+  } else {
+    parts.push(`<header class="top"><div class="brand"><img class="mark" alt="" src="assets/favicon.svg?v=4"><div class="titles"><h1>VirusTotal</h1>`);
+    if (status) parts.push(`<p class="status">${esc(status)}</p>`);
+    parts.push(`</div></div><div class="head-actions"><button class="icon-btn" type="button" data-action="settings" title="Settings" aria-label="Settings">${ICON.gear}</button></div></header>`);
+  }
 
   if (state.settingsOpen) {
     const watch = !!state.data.watchDownloads;
     const notify = !!state.data.notifyFlagged;
-    parts.push(`<section class="settings"><div class="setting"><div><p class="setting-title">Watch Downloads</p><p class="setting-copy">Scan new files saved to your Downloads folder. Sent files join the VirusTotal community dataset.</p></div><button class="toggle" type="button" role="switch" data-action="watch" aria-checked="${watch ? "true" : "false"}" aria-label="Watch Downloads"><span></span></button></div>`);
-    parts.push(`<div class="setting"><div><p class="setting-title">Notify when flagged</p><p class="setting-copy">Show a notification if a downloaded file is malicious or suspicious.</p></div><button class="toggle" type="button" role="switch" data-action="notify" aria-checked="${notify ? "true" : "false"}" aria-disabled="${watch ? "false" : "true"}" aria-label="Notify when flagged"><span></span></button></div></section>`);
+    const keySet = !!state.data.apiKeySet;
+    parts.push(`<section class="settings"><div class="setting"><div><p class="setting-title">API key</p><p class="setting-copy">${keySet ? "Saved and encrypted for this Windows user." : "Not set. Scans need a free VirusTotal key."}</p></div><button class="${keySet ? "btn-quiet" : "btn-primary"}" type="button" data-action="key">${keySet ? "Replace" : "Add key"}</button></div><div class="setting"><div><p class="setting-title">Watch Downloads</p><p class="setting-copy">Scan new files saved to your Downloads folder. Sent files join the VirusTotal community dataset.</p></div><button class="toggle" type="button" role="switch" data-action="watch" aria-checked="${watch ? "true" : "false"}" aria-label="Watch Downloads"><span></span></button></div>`);
+    parts.push(`<div class="setting"><div><p class="setting-title">Notify when flagged</p><p class="setting-copy">Show a notification if a downloaded file is malicious or suspicious.</p>${watch ? "" : `<p class="setting-hint">Turn on Watch Downloads first.</p>`}</div><button class="toggle" type="button" role="switch" data-action="notify" aria-checked="${notify ? "true" : "false"}" aria-disabled="${watch ? "false" : "true"}" aria-label="Notify when flagged"><span></span></button></div></section>`);
   } else {
   parts.push(`<div class="entry"><form class="lookup${lookupValue.trim() ? " has-value" : ""}"><input id="lookup" type="text" placeholder="Paste a URL or IP address" spellcheck="false" autocomplete="off" aria-label="URL or IP address"><button class="lookup-go" type="submit" aria-label="Scan URL or IP">${ICON.arrow}</button></form><button class="file-btn" type="button" data-action="scan" title="Scan a file (S)">${ICON.file}<span>File</span></button></div>`);
 
   if (!state.data.apiKeySet) {
-    parts.push(`<div class="callout"><span>Add a VirusTotal API key to scan.</span><button class="link-btn" type="button" data-action="key">Add key</button></div>`);
+    parts.push(`<div class="callout"><span>Add a VirusTotal API key to start scanning.</span><button class="btn-primary" type="button" data-action="key">Add key</button></div>`);
   } else if (state.data.notice) {
-    parts.push(`<div class="callout alert"><span>${esc(state.data.notice)}</span><button class="link-btn" type="button" data-action="key">Replace key</button></div>`);
+    parts.push(`<div class="callout alert"><span>${esc(state.data.notice)}</span><button class="btn-quiet" type="button" data-action="key">Replace key</button></div>`);
   }
 
   if (current) {
-    const width = meterWidth(current);
     const copyLabel = scanKind(current) === "url" ? "Copy URL" : scanKind(current) === "ip" ? "Copy IP" : "Copy hash";
     const idOk = scanId(current) && !scanId(current).startsWith("too-large-");
     const settled = current.status === "completed" || (current.phase === "queued" && statsOf(current).total > 0);
 
-    parts.push(`<section class="result"><div class="verdict-row"><h2 class="verdict ${esc(kind)}">${esc(verdictHeadline(current))}</h2>${settled ? `<span class="ratio-head ${esc(kind)}">${esc(ratioText(current))}</span>` : ""}</div>`);
+    parts.push(`<section class="result"><div class="verdict-row" aria-live="polite"><h2 class="verdict ${esc(kind)}">${VERDICT_ICON[kind] || ""}<span>${esc(verdictHeadline(current))}</span></h2>${settled ? `<span class="ratio-head ${esc(kind)}">${esc(ratioText(current))}</span>` : ""}</div>`);
     parts.push(`<p class="target-name">${esc(current.name || scanId(current))}</p>`);
     parts.push(`<p class="target-meta">${esc(resultMeta(current))}</p>`);
-    parts.push(`<div class="meter ${esc(kind)}"><span style="width:${width}%"></span></div>`);
+    parts.push(meterHtml(current, kind));
     parts.push(`<div class="action-row">`);
     if (settled && idOk) parts.push(`<button class="text-btn accent" type="button" data-action="open">Open report</button>`);
     if (settled && idOk) parts.push(`<button class="text-btn" type="button" data-action="rescan">Rescan</button>`);
@@ -242,12 +259,23 @@ function render() {
 
     const hits = Array.isArray(current.hits) ? current.hits : [];
     if (hits.length) {
-      parts.push(`<div class="detections"><h3>Detections</h3><div class="hits">`);
-      hits.slice(0, 12).forEach((hit) => {
+      const shown = hits.slice(0, state.hitsExpanded ? 12 : 3);
+      parts.push(`<div class="detections"><h3><span>Detections</span><span>${hits.length}</span></h3><div class="hits">`);
+      shown.forEach((hit) => {
         const cat = hit.category === "suspicious" ? "suspicious" : "malicious";
-        parts.push(`<div class="hit"><span class="hit-engine">${esc(hit.engine || "Engine")}</span><b class="${cat}">${esc(hit.result || cat)}</b></div>`);
+        const name = hit.result || cat;
+        parts.push(`<div class="hit"><span class="hit-engine"><i class="${cat}" aria-label="${cat}"></i>${esc(hit.engine || "Engine")}</span><span class="hit-name" title="${esc(name)}">${esc(name)}</span></div>`);
       });
-      parts.push(`</div></div>`);
+      parts.push(`</div>`);
+      const more = hits.length > 3;
+      const beyond = state.hitsExpanded && hits.length > 12 && idOk;
+      if (more || beyond) {
+        parts.push(`<div class="hits-foot">`);
+        if (more) parts.push(`<button class="text-btn" type="button" data-action="hits" aria-expanded="${state.hitsExpanded}">${state.hitsExpanded ? "Show fewer" : "Show all " + Math.min(hits.length, 12)}</button>`);
+        if (beyond) parts.push(`<button class="text-btn accent" type="button" data-action="open">+${hits.length - 12} more on VirusTotal</button>`);
+        parts.push(`</div>`);
+      }
+      parts.push(`</div>`);
     }
 
     const hasHash = /^[a-f0-9]{64}$/.test(current.sha256 || "");
@@ -261,29 +289,38 @@ function render() {
     parts.push(`</section>`);
   }
 
+  if (!allScans.length) {
+    parts.push(`<section class="dropzone">${ICON.drop}<strong>Scan a file, URL, or IP</strong><span>Press <kbd>S</kbd> to pick a file, <kbd>U</kbd> to paste a URL,<br>or drop files on VirusTotal Tray.exe.</span></section>`);
+  } else {
   parts.push(`<section class="recent"><div class="recent-head"><h3>Recent</h3>`);
   if (allScans.length >= 2) {
+    const counts = { flagged: 0, clean: 0 };
+    allScans.forEach((scan) => {
+      const kind = verdict(scan);
+      if (kind === "malicious" || kind === "suspicious") counts.flagged += 1;
+      else if (kind === "clean") counts.clean += 1;
+    });
     parts.push(`<div class="seg">${["all", "flagged", "clean"].map((filter) => {
       const label = filter.charAt(0).toUpperCase() + filter.slice(1);
-      return `<button class="seg-btn${state.filter === filter ? " on" : ""}" type="button" data-filter="${filter}">${label}</button>`;
+      const on = state.filter === filter;
+      return `<button class="seg-btn${on ? " on" : ""}" type="button" data-filter="${filter}" aria-pressed="${on}">${label}${counts[filter] ? `<em>${counts[filter]}</em>` : ""}</button>`;
     }).join("")}</div>`);
   }
   parts.push(`</div>`);
 
-  if (!allScans.length) {
-    parts.push(`<p class="empty">Paste a URL or IP above, choose a file, or drop files on VirusTotal Tray.exe.</p>`);
-  } else if (!list.length) {
+  if (!list.length) {
     parts.push(`<p class="empty">${state.filter === "flagged" ? "No flagged scans." : "No clean scans."}</p>`);
   } else {
     parts.push(`<div class="list">`);
     list.forEach((scan) => {
       const rowKind = verdict(scan);
       const selected = scanId(scan) === state.selectedId ? " selected" : "";
-      parts.push(`<button class="row${selected}" type="button" data-id="${esc(scanId(scan))}"><span class="row-main"><span class="dot ${esc(rowKind)}" aria-hidden="true"></span><span class="row-name">${esc(scan.name || scanId(scan))}</span><span class="row-ratio ${esc(rowKind)}">${esc(ratioText(scan))}</span></span><span class="row-sub">${esc(statusLine(scan))}</span></button>`);
+      parts.push(`<button class="row${selected}" type="button"${selected ? ' aria-current="true"' : ""} data-id="${esc(scanId(scan))}"><span class="row-main"><span class="dot ${esc(rowKind)}" aria-hidden="true"></span><span class="row-name">${esc(scan.name || scanId(scan))}</span><span class="row-ratio ${esc(rowKind)}">${esc(ratioText(scan))}</span></span><span class="row-sub">${esc(statusLine(scan))}</span></button>`);
     });
     parts.push(`</div>`);
   }
   parts.push(`</section>`);
+  }
   }
 
   parts.push(`<p class="footer">Submissions are shared with the VirusTotal community.</p>`);
@@ -336,7 +373,10 @@ panel.addEventListener("click", (event) => {
   const action = event.target.closest("[data-action]");
   if (action) {
     const name = action.dataset.action;
-    if (name === "settings") {
+    if (name === "hits") {
+      state.hitsExpanded = !state.hitsExpanded;
+      render();
+    } else if (name === "settings") {
       state.settingsOpen = !state.settingsOpen;
       render();
     } else if (name === "watch") {

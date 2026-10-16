@@ -42,7 +42,7 @@ The panel opens at the bottom-right of the primary screen. Close it with Escape,
 
 ## API key
 
-Choose **API key** in the tray menu, or the key button in the panel. The first scan also asks for a key if none is saved.
+Choose **API key** in the tray menu, or **API key** in panel Settings (the gear). The first scan also asks for a key if none is saved.
 
 Windows encrypts the key for the current user account (DPAPI) and stores it in `%APPDATA%\VirusTotal-Tray\settings.json` as `apiKeyProtected`. Another Windows user, or a copy of that file on another PC, cannot open it. A leftover plain-text `apiKey` field is encrypted on the next start and is not written back.
 
@@ -83,7 +83,7 @@ URLs and IP addresses you submit are added to the VirusTotal community dataset.
 
 ## What the panel shows
 
-The selected scan shows a verdict, a detection ratio, a meter, and up to 12 engine hits. Malicious hits are listed before suspicious ones. Each hit shows the engine name and the detection name.
+The selected scan shows a verdict with an icon, a detection ratio, a meter split into malicious, suspicious, and clean engines, and up to 12 engine hits (the first 3, then **Show all**). Malicious hits are listed before suspicious ones. Each hit shows the engine name and the detection name.
 
 | Verdict | Meaning |
 |---|---|
@@ -103,7 +103,7 @@ A manual scan that finishes as malicious raises a balloon notification. A suspic
 
 ## Settings
 
-The gear in the panel header stores two switches in the same settings file:
+The gear in the panel header opens Settings. It has the API key (add or replace) and two switches stored in the same settings file:
 
 - **Watch Downloads** watches the Downloads folder (the shell Downloads folder, or `%USERPROFILE%\Downloads` if that cannot be resolved). New files in that folder, not in subfolders, are queued. The app skips `desktop.ini`, `Thumbs.db`, and partial names ending in `.crdownload`, `.tmp`, `.part`, `.partial`, `.download`, `.opdownload`, or `.fdmdownload`. It waits until the file size is stable and greater than zero, so a browser can finish writing. This is off until you turn it on. Watched files are uploaded under the same community-dataset terms as any other file.
 - **Notify when flagged** applies to watched downloads. When it is on, a balloon appears if that download is malicious or suspicious. The switch stays off while Watch Downloads is off.
